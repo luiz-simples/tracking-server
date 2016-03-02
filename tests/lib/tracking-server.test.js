@@ -1,3 +1,5 @@
+'use strict';
+
 var trackingServerPath = '../../lib/tracking-server';
 jest.dontMock(trackingServerPath);
 var TrackingServer = require(trackingServerPath);

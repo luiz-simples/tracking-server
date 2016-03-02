@@ -1,0 +1,16 @@
+FROM postgres:9.4
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN echo "America/Sao_Paulo" > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
+
+RUN apt-get update && apt-get upgrade -qqy --force-yes && apt-get install locales -qqy --force-yes && apt-get dist-upgrade && apt-get autoremove -qqy --force-yes && apt-get autoclean -qqy --force-yes && apt-get clean -qqy --force-yes
+
+RUN locale-gen pt_BR.UTF-8
+RUN localedef -i pt_BR -c -f UTF-8 -A /usr/share/locale/locale.alias pt_BR.UTF-8
+ENV LANG pt_BR.utf8
+
+RUN usermod -u 1000 postgres
+
+CMD ["postgres"]

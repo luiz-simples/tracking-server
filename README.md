@@ -6,6 +6,7 @@ Tracking Server
 $ npm install
 ```
 
+
 ## How to contribute?
 
 Environment with:
@@ -16,15 +17,15 @@ Environment with:
 * [NodeJS](https://nodejs.org/dist/latest-v4.x/docs/api/)
 
 
-Make tasks of environment
+Make tasks of environment (Makefile commands)
 
 * Build docker image - ```$ make build-image```
-* Create docker container - ```$ make build-container```
-* Run docker container - ```$ make attach-container```
+* Run docker container - ```$ make build-container```
 
 
-First steps after environment builded
+First steps after environment success (nodeJS and Postgres)
 ```sh
 server@dev/tracking$ npm install
 server@dev/tracking$ npm test
+server@dev/tracking$ node server.js
 ```

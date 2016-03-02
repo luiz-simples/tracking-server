@@ -2,7 +2,7 @@
   "name": "tracking-server",
   "version": "1.0.1",
   "description": "Tracking Server",
-  "main": "./lib/tracking-server.js",
+  "main": "./server.js",
   "scripts": {
     "test": "jest"
   },
@@ -22,6 +22,11 @@
   "homepage": "https://github.com/luiz-simples/tracking-server#readme",
   "jest": {
     "testDirectoryName": "tests/lib",
+    "unmockedModulePathPatterns": [
+      "./tests/support",
+      "./node_modules/q",
+      "./node_modules/sql-query"
+    ],
     "testFileExtensions": [
       "js"
     ]
@@ -31,5 +36,16 @@
   },
   "devDependencies": {
     "jest-cli": "^0.8.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "colog": "^1.0.4",
+    "compression": "^1.6.1",
+    "express": "^4.13.4",
+    "helmet": "^1.3.0",
+    "moment": "^2.11.2",
+    "q": "^1.4.1",
+    "q-postgres": "^1.0.3",
+    "sql-query": "^0.1.26"
   }
 }

@@ -1,8 +1,8 @@
 {
     "node"     : true,
-    "browser"  : true,
+    "browser"  : false,
     "boss"     : false,
-    "curly"    : true,
+    "curly"    : false,
     "debug"    : false,
     "devel"    : false,
     "eqeqeq"   : true,
@@ -29,6 +29,7 @@
       "define": false,
       "require": false,
       "it": false,
+      "pit": false,
       "describe": false,
       "jest": false,
       "beforeEach": false,

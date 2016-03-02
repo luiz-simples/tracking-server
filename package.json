@@ -1,0 +1,35 @@
+{
+  "name": "tracking-server",
+  "version": "1.0.1",
+  "description": "Tracking Server",
+  "main": "./lib/tracking-server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luiz-simples/tracking-server.git"
+  },
+  "keywords": [],
+  "author": "Luiz Amorim <luiz.simples@gmail.com> (https://github.com/luiz-simples)",
+  "contributors": [
+    "Luiz Amorim <luiz.simples@gmail.com> (https://github.com/luiz-simples)"
+  ],
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/luiz-simples/tracking-server/issues"
+  },
+  "homepage": "https://github.com/luiz-simples/tracking-server#readme",
+  "jest": {
+    "testDirectoryName": "tests/lib",
+    "testFileExtensions": [
+      "js"
+    ]
+  },
+  "engines": {
+    "node": "~4.3.1"
+  },
+  "devDependencies": {
+    "jest-cli": "^0.8.2"
+  }
+}

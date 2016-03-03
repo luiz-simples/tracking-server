@@ -56,32 +56,42 @@ var runServer = function() {
 
   exApp.post('/contacts', function(req, res, next) {
     var args = req.body || req.params;
-    var trans;
+
+    var saveContact = function(transaction) {
+      return trackingServer
+        .newContact(args, transaction)
+        .then(transaction.commit)
+        .catch(transaction.rollback);
+    };
 
     getTransaction().then(function(transaction) {
-      trans = transaction;
-      return trackingServer.newContact(args, transaction).then(function(newContact) {
-        res.status(202).json(newContact);
+      return saveContact(transaction).then(function(model) {
+        res.status(202).json(model);
       }).catch(function(err) {
         res.status(422).json(err.message);
-        throw err;
-      });
-    }).then(trans.commit).catch(trans.rollback).then(trans.end).catch(trans.end).then(next).catch(next);
+        console.log(':::ERROR-CONTACT::: ', err.message);
+      }).then(transaction.end).then(next);
+    });
   });
 
   exApp.post('/activities', function(req, res, next) {
     var args = req.body || req.params;
-    var trans;
+
+    var saveActivity = function(transaction) {
+      return trackingServer
+        .newActivity(args, transaction)
+        .then(transaction.commit)
+        .catch(transaction.rollback);
+    };
 
     getTransaction().then(function(transaction) {
-      trans = transaction;
-      return trackingServer.newActivity(args, transaction).then(function(newContact) {
-        res.status(202).json(newContact);
+      return saveActivity(transaction).then(function(model) {
+        res.status(202).json(model);
       }).catch(function(err) {
         res.status(422).json(err.message);
-        throw err;
-      });
-    }).then(trans.commit).catch(trans.rollback).then(trans.end).catch(trans.end).then(next).catch(next);
+        console.log(':::ERROR-ACTIVITY::: ', err.message);
+      }).then(transaction.end).then(next);
+    });
   });
 
   var server = http.createServer(exApp);

@@ -5,9 +5,9 @@ module.exports = {
     return `
        CREATE TABLE contacts (
          id SERIAL PRIMARY KEY,
-         cid INTEGER,
-         name VARCHAR(255),
-         email VARCHAR(255),
+         cid VARCHAR(350),
+         name VARCHAR(350),
+         email VARCHAR(350),
          message TEXT,
          dthr TIMESTAMP
        );

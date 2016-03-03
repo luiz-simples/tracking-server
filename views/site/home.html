@@ -1,13 +1,24 @@
 <include src="/site/body.html">
-  <pre>
-    <code>
-      &#x3C;script&#x3E;
-        (function(action, reference){
-          var w=window,d=document,a=d.createElement(&#x27;script&#x27;),m=d.getElementsByTagName(&#x27;script&#x27;)[0];
-          a.async=1;a.src = &#x27;//tracking-server.herokuapp.com/release/tracking-analytics.js&#x27;;m.parentNode.insertBefore(a,m);
-          a.onload=function(){trackingAnalytics.sendActivity(action, reference)}
-        })(&#x27;pageview&#x27;, window.location.pathname);
-      &#x3C;/script&#x3E;
-    </code>
-  </pre>
+  <div class="jumbotron">
+    <h2>Copy and Past in your page to tracking</h2>
+
+    <p>
+      <pre style="text-align: left;">
+        <code id="script">&#x3C;script&#x3E;
+            (function(act,ref){
+              var s=&#x27;script&#x27;,w=window,d=document,a=d.createElement(s),
+              m=d.getElementsByTagName(s)[0];a.async=1;
+              a.src=&#x27;//tracking-server.herokuapp.com/release/tracking-analytics.js&#x27;;
+              m.parentNode.insertBefore(a,m);a.onload=function(){trackingAnalytics.sendActivity(act,ref)}
+            })(&#x27;pageview&#x27;, window.location.pathname);
+          &#x3C;/script&#x3E;</code>
+      </pre>
+    </p>
+
+    <p>
+      <button class="btn btn-lg btn-success btn-clipboard" type="button" data-clipboard-target="#script">
+        Copy to clipboard
+      </button>
+    </p>
+  </div>
 </include>

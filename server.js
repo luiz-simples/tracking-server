@@ -4,6 +4,7 @@ var http        = require('http');
 var colog       = require('colog');
 var helmet      = require('helmet');
 var express     = require('express')();
+var HTMLing     = require('htmling');
 var qPostgres   = require('q-postgres');
 var bodyParser  = require('body-parser');
 var compression = require('compression');
@@ -19,6 +20,17 @@ express.use(function(req, res, next) {
   next();
 });
 
+var pathViews = __dirname.concat('/views');
+var engineName = 'html';
+
+express.engine(engineName, HTMLing.express(pathViews + '/', {
+  watch: false,
+  minify: false
+}));
+
+express.set('views', pathViews);
+express.set('view engine', engineName);
+
 var env = process.env.NODE_ENV || 'development';
 var props = require('./server.json')[env];
 var db = props.db;
@@ -27,6 +39,10 @@ var poolPostgres = new qPostgres(db.user, db.pass, db.host, db.base, process.env
 var trackingServer = new TrackingServer(poolPostgres);
 
 var runServer = function() {
+  express.get('/', function(req, res) {
+    res.render('site/home');
+  });
+
   express.post('/contacts', trackingServer.routeNewContact);
   express.post('/activities', trackingServer.routeNewActivity);
 

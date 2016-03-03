@@ -56,12 +56,14 @@
       return null;
   }
 
-  var hostId     = window.location.hostname;
+  var location   = window.location;
+  var hostId     = location.protocol.concat('//', location.host);
   var cookieName = 'tracking-server-cid';
   var cookieId   = readCookie(cookieName);
   if (!cookieId) {
     cookieId = guid();
-    createCookie(cookieName, cookieId);
+    var expireAfterOneMonth = 30;
+    createCookie(cookieName, cookieId, expireAfterOneMonth);
   }
 
   var trackingAnalytics = {

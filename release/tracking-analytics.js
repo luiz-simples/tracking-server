@@ -62,11 +62,14 @@
   }
 
   var cookieName = 'tracking-server-cid';
-  createCookie(cookieName, guid());
+  var cookieId   = readCookie(cookieName);
+  if (!cookieId) {
+    cookieId = guid();
+    createCookie(cookieName, cookieId);
+  }
 
   var trackingAnalytics = {
     sendActivity: function(name, reference) {
-      var cookieId = readCookie(cookieName);
       console.log(cookieId);
       xhttp.open("POST", "//tracking-server.herokuapp.com/activities", true);
       xhttp.setRequestHeader("Content-type", "application/json");

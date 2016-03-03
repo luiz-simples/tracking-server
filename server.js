@@ -1,35 +1,41 @@
 'use strict';
 
+var path        = require('path');
 var http        = require('http');
 var colog       = require('colog');
 var helmet      = require('helmet');
-var express     = require('express')();
+var express     = require('express');
 var HTMLing     = require('htmling');
 var qPostgres   = require('q-postgres');
 var bodyParser  = require('body-parser');
 var compression = require('compression');
 var TrackingServer = require('./lib/tracking-server');
 
-express.use(helmet());
-express.use(compression());
-express.use(bodyParser.json({ limit: '2mb' }));
-express.use(function(req, res, next) {
+var exApp = express();
+
+exApp.use(helmet());
+exApp.use(compression());
+exApp.use(bodyParser.json({ limit: '2mb' }));
+exApp.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'PUT, DELETE, GET, POST');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Custom-Header');
   next();
 });
 
+var releasePath = path.resolve(path.dirname(__dirname).concat('/release'));
+exApp.use('/release', express.static(releasePath));
+
 var pathViews = __dirname.concat('/views');
 var engineName = 'html';
 
-express.engine(engineName, HTMLing.express(pathViews + '/', {
+exApp.engine(engineName, HTMLing.express(pathViews + '/', {
   watch: false,
   minify: false
 }));
 
-express.set('views', pathViews);
-express.set('view engine', engineName);
+exApp.set('views', pathViews);
+exApp.set('view engine', engineName);
 
 var env = process.env.NODE_ENV || 'development';
 var props = require('./server.json')[env];
@@ -39,14 +45,14 @@ var poolPostgres = new qPostgres(db.user, db.pass, db.host, db.base, process.env
 var trackingServer = new TrackingServer(poolPostgres);
 
 var runServer = function() {
-  express.get('/', function(req, res) {
+  exApp.get('/', function(req, res) {
     res.render('site/home');
   });
 
-  express.post('/contacts', trackingServer.routeNewContact);
-  express.post('/activities', trackingServer.routeNewActivity);
+  exApp.post('/contacts', trackingServer.routeNewContact);
+  exApp.post('/activities', trackingServer.routeNewActivity);
 
-  var server = http.createServer(express);
+  var server = http.createServer(exApp);
 
   server.on('error', function(err) {
     colog.error(err);

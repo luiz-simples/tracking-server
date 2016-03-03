@@ -1,13 +1,11 @@
 <include src="/site/body.html">
   <pre>
     <code>
+      &#x3C;script src=&#x22;https://tracking-server.herokuapp.com/release/tracking-analytics.js&#x22;&#x3E;&#x3C;/script&#x3E;
       &#x3C;script&#x3E;
-        (function(i,s,o,g,r,a,m){i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
-        var hash,path,reference;hash=window.location.hash;path=window.location.pathname;
-        reference=path.concat(hash);i[r].sendAction(&#x27;pageview&#x27;,reference);
-        })(window,document,&#x27;script&#x27;,&#x27;https://tracking-server.herokuapp.com/js/analytics.js&#x27;,&#x27;ta&#x27;);
+        document.addEventListener(&#x27;DOMContentLoaded&#x27;, function() {
+          ta.sendActivity(&#x27;pageview&#x27;, window.location.pathname);
+        });
       &#x3C;/script&#x3E;
     </code>
   </pre>

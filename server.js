@@ -23,12 +23,11 @@ exApp.use(function(req, res, next) {
   next();
 });
 
-var releasePath = path.resolve(path.dirname(__dirname).concat('/release'));
-exApp.use('/release', express.static(releasePath));
-
 var pathViews = __dirname.concat('/views');
+var releasePath = __dirname.concat('/release');
 var engineName = 'html';
 
+exApp.use('/release', express.static(releasePath));
 exApp.engine(engineName, HTMLing.express(pathViews + '/', {
   watch: false,
   minify: false

@@ -80,7 +80,17 @@
 
     sendContact: function(name, email, message, callAfterLoad) {
       var xhttp = getHttpRequest();
-      xhttp.addEventListener("load", callAfterLoad);
+      xhttp.addEventListener("load", function(evt) {
+        var targetResponse = evt.currentTarget;
+        var isError = Boolean(targetResponse.status >= 400);
+        var result;
+        var messageError;
+
+        if (isError)  messageError = JSON.parse(targetResponse.responseText);
+        if (!isError) result       = JSON.parse(targetResponse.responseText);
+
+        callAfterLoad(messageError, result);
+      });
       xhttp.open("POST", "//tracking-server.herokuapp.com/contacts");
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(JSON.stringify({ name: name, email: email, message: message, cid: cookieId, hid: hostId }));

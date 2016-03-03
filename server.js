@@ -43,13 +43,46 @@ var db = props.db;
 var poolPostgres = new qPostgres(db.user, db.pass, db.host, db.base, process.env.DATABASE_URL);
 var trackingServer = new TrackingServer(poolPostgres);
 
+var getTransaction = function() {
+  return poolPostgres.connect().then(function(connection) {
+    return connection.openTransaction();
+  });
+};
+
 var runServer = function() {
   exApp.get('/', function(req, res) {
     res.render('site/home');
   });
 
-  exApp.post('/contacts', trackingServer.routeNewContact);
-  exApp.post('/activities', trackingServer.routeNewActivity);
+  exApp.post('/contacts', function(req, res, next) {
+    var args = req.body || req.params;
+    var trans;
+
+    getTransaction().then(function(transaction) {
+      trans = transaction;
+      return trackingServer.newContact(args, transaction).then(function(newContact) {
+        res.status(202).json(newContact);
+      }).catch(function(err) {
+        res.status(422).json(err.message);
+        throw err;
+      });
+    }).then(trans.commit).catch(trans.rollback).then(trans.end).catch(trans.end).then(next).catch(next);
+  });
+
+  exApp.post('/activities', function(req, res, next) {
+    var args = req.body || req.params;
+    var trans;
+
+    getTransaction().then(function(transaction) {
+      trans = transaction;
+      return trackingServer.newActivity(args, transaction).then(function(newContact) {
+        res.status(202).json(newContact);
+      }).catch(function(err) {
+        res.status(422).json(err.message);
+        throw err;
+      });
+    }).then(trans.commit).catch(trans.rollback).then(trans.end).catch(trans.end).then(next).catch(next);
+  });
 
   var server = http.createServer(exApp);
 

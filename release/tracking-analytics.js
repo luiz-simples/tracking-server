@@ -56,11 +56,7 @@
       return null;
   }
 
-  // Erase cookie
-  function eraseCookie(name) {
-      createCookie(name,"",-1);
-  }
-
+  var hostId     = window.location.hostname;
   var cookieName = 'tracking-server-cid';
   var cookieId   = readCookie(cookieName);
   if (!cookieId) {
@@ -70,11 +66,9 @@
 
   var trackingAnalytics = {
     sendActivity: function(name, reference) {
-      console.log(cookieId);
-      xhttp.open("POST", "//tracking-server.herokuapp.com/activities", true);
+      xhttp.open("POST", "//tracking-server.herokuapp.com/activities");
       xhttp.setRequestHeader("Content-type", "application/json");
-      xhttp.send(JSON.stringify({ name: name, reference: reference, cid: cookieId, hid: 'kajskdjasd' }));
-      console.log('SUCESSO::', name, reference);
+      xhttp.send(JSON.stringify({ name: name, reference: reference, cid: cookieId, hid: hostId }));
     },
 
     sendContact: function(name, reference) {

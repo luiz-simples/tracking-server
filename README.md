@@ -1,10 +1,7 @@
 # tracking-server
 Tracking Server
 
-## How to install?
-```sh
-$ npm install
-```
+[DEMO](https://tracking-server.herokuapp.com/)
 
 
 ## How to contribute?

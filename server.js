@@ -40,7 +40,7 @@ var runServer = function() {
     colog.success('RUNNING SERVER PORT: '.concat(props.port));
   });
 
-  server.listen(props.port);
+  server.listen(process.env.PORT || props.port);
 };
 
 trackingServer.prepare().then(runServer).catch(function(err) {

@@ -9,12 +9,16 @@
 }(this, function () {
   'use strict';
 
-  var xhttp;
+  function getHttpRequest() {
+    var xhttp;
 
-  if (window.XMLHttpRequest) {
-    xhttp = new XMLHttpRequest();
-  } else {
-    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    if (window.XMLHttpRequest) {
+      xhttp = new XMLHttpRequest();
+    } else {
+      xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    return xhttp;
   }
 
   function guid() {
@@ -66,17 +70,20 @@
     createCookie(cookieName, cookieId, expireAfterOneMonth);
   }
 
-  var trackingAnalytics = {
+  return {
     sendActivity: function(name, reference) {
+      var xhttp = getHttpRequest();
       xhttp.open("POST", "//tracking-server.herokuapp.com/activities");
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(JSON.stringify({ name: name, reference: reference, cid: cookieId, hid: hostId }));
     },
 
-    sendContact: function(name, reference) {
-      console.log('SUCESSO::', name, reference);
+    sendContact: function(name, email, message, callAfterLoad) {
+      var xhttp = getHttpRequest();
+      xhttp.addEventListener("load", callAfterLoad);
+      xhttp.open("POST", "//tracking-server.herokuapp.com/contacts");
+      xhttp.setRequestHeader("Content-type", "application/json");
+      xhttp.send(JSON.stringify({ name: name, email: email, message: message, cid: cookieId, hid: hostId }));
     }
   };
-
-  return trackingAnalytics;
 }));

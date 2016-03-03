@@ -13,11 +13,11 @@
   "production": {
     "port": 80,
     "db": {
-      "base": "tracking",
-      "user": "tracking",
-      "pass": "s9SwY2Ak7eQ6xZ",
-      "host": "trackingHostDB",
-      "port": 5432
+      "base": "",
+      "user": "",
+      "pass": "",
+      "host": "",
+      "port":  0
     }
   }
 }

@@ -9,8 +9,20 @@
 }(this, function () {
   'use strict';
 
+  var xhttp;
+
+  if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+  } else {
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
   var trackingAnalytics = {
     sendActivity: function(name, reference) {
+      console.log(document.cookie);
+      xhttp.open("POST", "//tracking-server.herokuapp.com/activities", true);
+      xhttp.setRequestHeader("Content-type", "application/json");
+      xhttp.send(JSON.stringify({ name: name, reference: reference, cid: 'sdladklasd', hid: 'kajskdjasd' }));
       console.log('SUCESSO::', name, reference);
     },
 

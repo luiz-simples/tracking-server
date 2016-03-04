@@ -25,7 +25,9 @@
     "unmockedModulePathPatterns": [
       "./tests/support",
       "./node_modules/q",
-      "./node_modules/sql-query"
+      "./node_modules/sql-query",
+      "./node_modules/moment",
+      "./node_modules/moment-timezone"
     ],
     "testFileExtensions": [
       "js"

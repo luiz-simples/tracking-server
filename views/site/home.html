@@ -16,9 +16,37 @@
         Copy script to clipboard
       </button>
 
-      <a class="btn btn-lg btn-primary" href="/contacts" target="_blank">
+      <a class="btn btn-lg btn-primary" href="//tracking-pages.herokuapp.com/admin" target="_blank">
         View Page of contacts
       </a>
+    </p>
+
+    <br />
+    <br />
+
+    <h2>Sample to send contacts</h2>
+
+    <p>
+      <pre style="text-align: left;">
+<code>var showErrorMessage = function(messageError) {
+  console.log(messageError);
+};
+
+var showSuccessMessage = function() {
+  alert(&#x27;Success contact send&#x27;);
+};
+
+var obj = {
+  name: &#x27;Contact Full Name&#x27;,
+  email: &#x27;contact@email.com&#x27;,
+  message: &#x27;This is a main message&#x27;
+};
+
+trackingAnalytics.sendContact(obj.name, obj.email, obj.message, function(messageError, result) {
+  if (messageError) return showErrorMessage(messageError);
+  showSuccessMessage();
+});</code>
+      </pre>
     </p>
   </div>
 </include>

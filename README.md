@@ -1,7 +1,9 @@
 # tracking-server
 Tracking Server
 
-[DEMO](https://tracking-server.herokuapp.com/)
+* [DEMO](https://tracking-server.herokuapp.com/)
+* [GEM](https://rubygems.org/gems/tracking-api)
+* [CONSUME](https://tracking-pages.herokuapp.com/)
 
 
 ## How to contribute?
@@ -20,7 +22,7 @@ Make tasks of environment (Makefile commands)
 * Run docker container - ```$ make build-container```
 
 
-First steps after environment success (nodeJS and Postgres)
+First steps after environment success (nodeJS and Postgres, with or without docker)
 ```sh
 server@dev/tracking$ npm install
 server@dev/tracking$ npm test

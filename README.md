@@ -23,9 +23,9 @@ Make tasks of environment (Makefile commands)
 * Run docker container - ```$ make build-container```
 
 
-First steps after environment success (nodeJS and Postgres, with or without docker)
 The first step is to configure the ```server.json``` file, include the database crendentials in this file.
 
+First steps after environment success (nodeJS and Postgres, with or without docker)
 ```sh
 server@dev/tracking$ npm install
 server@dev/tracking$ npm test

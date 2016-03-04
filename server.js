@@ -49,8 +49,8 @@ var executeAction = function(action, res) {
   };
 
   var responseError = function(err) {
+    colog.error(':::ERROR::: ', err);
     res.status(422).json(err.message);
-    colog.error(':::ERROR::: ', err.message);
   };
 
   return poolPostgres.connect().then(function(connection) {
@@ -58,8 +58,8 @@ var executeAction = function(action, res) {
       .openTransaction()
       .then(action)
       .then(connection.commit)
-      .catch(connection.rollback)
       .then(responseSuccess)
+      .catch(connection.rollback)
       .catch(responseError)
       .then(connection.end);
   });

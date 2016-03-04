@@ -14,6 +14,7 @@ Environment with:
 * [Debian](https://www.debian.org/releases/stable/)
 * [Make](http://www.gnu.org/software/make/manual/make.html#Running)
 * [NodeJS](https://nodejs.org/dist/latest-v4.x/docs/api/)
+* [PostgreSQL](http://www.postgresql.org/docs/9.4/static/)
 
 
 Make tasks of environment (Makefile commands)
@@ -23,6 +24,8 @@ Make tasks of environment (Makefile commands)
 
 
 First steps after environment success (nodeJS and Postgres, with or without docker)
+The first step is to configure the ```server.json``` file, include the database crendentials in this file.
+
 ```sh
 server@dev/tracking$ npm install
 server@dev/tracking$ npm test

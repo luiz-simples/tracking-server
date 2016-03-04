@@ -43,9 +43,25 @@ var db = props.db;
 var poolPostgres = new qPostgres(db.user, db.pass, db.host, db.base, process.env.DATABASE_URL);
 var trackingServer = new TrackingServer(poolPostgres);
 
-var getTransaction = function() {
+var executeAction = function(action, res) {
+  var responseSuccess = function(result) {
+    res.status(202).json(result);
+  };
+
+  var responseError = function(err) {
+    res.status(422).json(err.message);
+    colog.error(':::ERROR::: ', err.message);
+  };
+
   return poolPostgres.connect().then(function(connection) {
-    return connection.openTransaction();
+    return connection
+      .openTransaction()
+      .then(action)
+      .then(connection.commit)
+      .catch(connection.rollback)
+      .then(responseSuccess)
+      .catch(responseError)
+      .then(connection.end);
   });
 };
 
@@ -54,44 +70,35 @@ var runServer = function() {
     res.render('site/home');
   });
 
-  exApp.post('/contacts', function(req, res, next) {
-    var args = req.body || req.params;
+  exApp.get('/contacts', function(req, res, next) {
+    var args = req.query;
+    console.log(args);
 
-    var saveContact = function(transaction) {
-      return trackingServer
-        .newContact(args, transaction)
-        .then(transaction.commit)
-        .catch(transaction.rollback);
+    var getContacts = function(transaction) {
+      return trackingServer.getContacts(args, transaction);
     };
 
-    getTransaction().then(function(transaction) {
-      return saveContact(transaction).then(function(model) {
-        res.status(202).json(model);
-      }).catch(function(err) {
-        res.status(422).json(err.message);
-        console.log(':::ERROR-CONTACT::: ', err.message);
-      }).then(transaction.end).then(next);
-    });
+    executeAction(getContacts, res).then(next);
+  });
+
+  exApp.post('/contacts', function(req, res, next) {
+    var args = req.body;
+
+    var saveContact = function(transaction) {
+      return trackingServer.newContact(args, transaction);
+    };
+
+    executeAction(saveContact, res).then(next);
   });
 
   exApp.post('/activities', function(req, res, next) {
-    var args = req.body || req.params;
+    var args = req.body;
 
     var saveActivity = function(transaction) {
-      return trackingServer
-        .newActivity(args, transaction)
-        .then(transaction.commit)
-        .catch(transaction.rollback);
+      return trackingServer.newActivity(args, transaction);
     };
 
-    getTransaction().then(function(transaction) {
-      return saveActivity(transaction).then(function(model) {
-        res.status(202).json(model);
-      }).catch(function(err) {
-        res.status(422).json(err.message);
-        console.log(':::ERROR-ACTIVITY::: ', err.message);
-      }).then(transaction.end).then(next);
-    });
+    executeAction(saveActivity, res).then(next);
   });
 
   var server = http.createServer(exApp);

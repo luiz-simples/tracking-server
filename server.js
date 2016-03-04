@@ -100,6 +100,16 @@ var runServer = function() {
     executeAction(saveActivity, res).then(next);
   });
 
+  exApp.get('/activities', function(req, res, next) {
+    var args = req.query;
+
+    var getContacts = function(transaction) {
+      return trackingServer.getActivities(args, transaction);
+    };
+
+    executeAction(getContacts, res).then(next);
+  });
+
   var server = http.createServer(exApp);
 
   server.on('error', function(err) {

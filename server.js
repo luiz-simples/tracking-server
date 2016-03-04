@@ -72,7 +72,6 @@ var runServer = function() {
 
   exApp.get('/contacts', function(req, res, next) {
     var args = req.query;
-    console.log(args);
 
     var getContacts = function(transaction) {
       return trackingServer.getContacts(args, transaction);
